@@ -1,0 +1,29 @@
+# Netlify configuration for multi-framework support with dynamic deploy previews
+
+[build]
+  command = "npm run build"
+  publish = "out"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[context.production]
+  branch = "main"
+  environment = { NODE_ENV = "production" }
+
+[context.deploy-preview]
+  environment = { NODE_ENV = "development" }
+
+[context."feature/*"]
+  environment = { NODE_ENV = "staging" }
+
+[context."hotfix/*"]
+  environment = { NODE_ENV = "hotfix" }
+
+[context."gemini/*"]
+  environment = { NODE_ENV = "gemini", FORTRESS_MODE = "placement-simulation" }
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
